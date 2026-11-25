@@ -20,11 +20,11 @@ public class ProdutoControllers {
     // Cria um construtor para produtocontrollers
 
     public ProdutoControllers(){
-        produtos.add(new Produto(1,"Notebook" , 3500));
+        produtos.add(new Produto(1, "Notebook", 5, 3500));
 
-        produtos.add(new Produto(2, "Mouse", 100));
+        produtos.add(new Produto(2, "Mouse", 10, 100));
 
-        produtos.add(new Produto(3, "Teclado", 250));
+        produtos.add(new Produto(3, "Teclado", 8, 250));
 
     }
 
@@ -63,6 +63,11 @@ public class ProdutoControllers {
 
     @PostMapping 
     public Produto cadastrarProduto(@RequestBody Produto produto ){
+        int proximoId = produtos.stream()
+                .mapToInt(Produto::getId)
+                .max()
+                .orElse(0) + 1;
+        produto.setId(proximoId);
         produtos.add(produto);
         return produto;
 
@@ -80,6 +85,7 @@ public class ProdutoControllers {
     for(Produto produto: produtos){
         if(produto.getId() == id){
             produto.setNome(produtoatualizado.getNome());
+            produto.setQuantidade(produtoatualizado.getQuantidade());
             produto.setPreco(produtoatualizado.getPreco());
             return produto;
         }
